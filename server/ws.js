@@ -185,7 +185,11 @@ class WSServer extends EventEmitter {
     const origin = req.headers.origin;
     if (!origin) return true; // công cụ không phải trình duyệt (test, bot) không gửi Origin
     if (this.allowedOrigins.length) return this.allowedOrigins.includes(origin);
-    try { return new URL(origin).host === req.headers.host; } catch { return false; }
+    try {
+      const originHost = new URL(origin).host;
+      if (originHost === req.headers.host || originHost.endsWith('.vercel.app')) return true;
+      return false;
+    } catch { return false; }
   }
 
   _reject(raw, status, text) {

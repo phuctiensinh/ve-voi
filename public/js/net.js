@@ -1,14 +1,11 @@
 // Kết nối WebSocket: tự nối lại (lùi thời gian dần), nhịp tim phát hiện mạng chết, đồng bộ đồng hồ với server.
 export class Net {
   constructor(path = '/ws') {
-    const customHost = window.WS_SERVER_URL || localStorage.getItem('WS_SERVER_URL');
-    if (customHost) {
-      const cleanHost = customHost.replace(/^wss?:\/\//, '').replace(/\/$/, '');
-      const proto = location.protocol === 'https:' || customHost.startsWith('wss:') ? 'wss' : 'ws';
-      this.url = `${proto}://${cleanHost}${path.startsWith('/') ? path : '/' + path}`;
-    } else {
-      this.url = `${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}${path}`;
-    }
+    const defaultHost = location.hostname.endsWith('.vercel.app') ? 've-voi.onrender.com' : location.host;
+    const customHost = window.WS_SERVER_URL || localStorage.getItem('WS_SERVER_URL') || defaultHost;
+    const cleanHost = customHost.replace(/^wss?:\/\//, '').replace(/\/$/, '');
+    const proto = location.protocol === 'https:' || customHost.startsWith('wss:') ? 'wss' : 'ws';
+    this.url = proto + '://' + cleanHost + (path.startsWith('/') ? path : '/' + path);
     this.handlers = new Map();
     this.ws = null;
     this.state = 'connecting';
