@@ -557,15 +557,27 @@ class Room {
     this.applyWord(Math.floor(this.rand() * this.turn.options.length));
   }
 
-  chooseWord(player, index) {
+  chooseWord(player, payload) {
     if (this.phase !== 'choosing' || !this.turn || player.id !== this.turn.drawerId) return 'INVALID_STATE';
+    if (typeof payload === 'number') payload = { index: payload };
+    const d = payload && typeof payload === 'object' ? payload : {};
+    if (typeof d.customWord === 'string' && d.customWord.trim()) {
+      const w = sanitizeText(d.customWord, 32);
+      if (w.length < 1 || w.length > 32 || !/^[\p{L}\p{N}][\p{L}\p{N} '-]*$/u.test(w) || !/\p{L}/u.test(w)) {
+        return 'BAD_PAYLOAD';
+      }
+      this.applyWord({ w, a: [], d: 'medium', t: 'custom' });
+      return null;
+    }
+    const index = d.index;
     if (!Number.isInteger(index) || index < 0 || index >= this.turn.options.length) return 'BAD_PAYLOAD';
     this.applyWord(index);
     return null;
   }
 
-  applyWord(index) {
-    const word = this.turn.options[index];
+  applyWord(target) {
+    const word = typeof target === 'number' ? this.turn.options[target] : target;
+    if (!word || !word.w) return;
     const drawer = this.players.get(this.turn.drawerId);
     this.used.add(word.w.normalize('NFC').toLocaleLowerCase('vi'));
     this.turn.word = word;

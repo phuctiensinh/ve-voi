@@ -72,7 +72,7 @@ const C2S = {
   'host:transfer': target,
   'host:mute': S.obj({ playerId: S.str(32, 1), muted: S.bool() }),
   'vote:kick': target,
-  'word:choose': S.obj({ index: S.int(0, 9) }),
+  'word:choose': S.obj({ index: S.opt(S.int(0, 9)), customWord: S.opt(S.str(32)) }),
   chat: S.obj({ text: S.str(1000) }),
   report: S.any(),
   'draw:rate': S.obj({ like: S.bool() }),

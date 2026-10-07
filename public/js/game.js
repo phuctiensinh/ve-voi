@@ -188,6 +188,13 @@ function overlayHTML(st) {
             <span class="meta">${esc(o.topic)}</span>
             <span class="pts">tối đa ${o.maxPoints} điểm</span>
           </button>`).join('')}</div>
+        <div class="custom-word-area">
+          <span class="custom-word-divider">HOẶC TỰ NHẬP TỪ MỚI</span>
+          <form class="custom-word-form" id="custom-word-form" autocomplete="off">
+            <input type="text" id="custom-word-input" maxlength="32" placeholder="Gõ từ bạn muốn vẽ…" autocomplete="off" spellcheck="false" enterkeyhint="go">
+            <button type="submit" class="btn btn-green btn-small"><svg class="ic"><use href="#i-pencil"/></svg><span>Vẽ từ này</span></button>
+          </form>
+        </div>
         <p>Không chọn thì sau <span id="ov-count">–</span> giây sẽ tự chọn giúp bạn.</p></div>`;
     }
     case 'turnEnd': {
@@ -321,6 +328,20 @@ export function initGame() {
     if (b.dataset.act === 'again') net.emit('host:start');
     else if (b.dataset.act === 'lobby') net.emit('host:lobby');
     else if (b.dataset.act === 'leave') document.dispatchEvent(new CustomEvent('vevoi:leave'));
+  });
+  $('#overlay').addEventListener('submit', (e) => {
+    if (e.target.id === 'custom-word-form') {
+      e.preventDefault();
+      const input = $('#custom-word-input');
+      const text = input ? input.value.trim() : '';
+      if (!text) return;
+      if (text.length > 32) {
+        flash('Từ quá dài (tối đa 32 ký tự)', 'red');
+        return;
+      }
+      net.emit('word:choose', { customWord: text });
+      sound.play('pick');
+    }
   });
   $$('.guess-actions .rate').forEach((b) => b.addEventListener('click', () => {
     if (net.emit('draw:rate', { like: b.dataset.like === '1' })) { b.disabled = true; sound.play('pick'); }

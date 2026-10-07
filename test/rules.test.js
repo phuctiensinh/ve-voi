@@ -170,6 +170,8 @@ test('giao thức: payload sai kiểu / thiếu / sự kiện lạ đều bị t
   assert.ok(!validate('draw:pts', { p: [1, 'a'] }));
   assert.ok(!validate('draw:pts', { p: [1, NaN] }));
   assert.ok(!validate('word:choose', { index: 1.5 }));
+  assert.ok(validate('word:choose', { customWord: 'Mèo con' }));
+  assert.ok(validate('word:choose', { index: 0 }));
   assert.ok(!validate('host:kick', { playerId: '' }));
   assert.ok(!validate('room:join', { code: 'ABCDEF', profile: { name: 5 } }));
   assert.ok(validate('room:join', { code: 'ABCDEF', token: 't', profile: { name: 'A', avatar: { face: 1, color: 2 } } }));

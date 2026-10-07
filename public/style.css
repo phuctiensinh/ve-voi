@@ -326,10 +326,15 @@ textarea { resize: vertical; min-height: 54px; }
 .choice .w { font-weight: 900; font-size: 19px; line-height: 1.25; margin: 2px 0 1px; overflow-wrap: anywhere; }
 .choice .meta { font-size: 12.5px; font-weight: 700; color: var(--muted); }
 .choice .pts { font-size: 12.5px; font-weight: 800; color: var(--green-ink); }
-.diff-chip { font-size: 12px; font-weight: 900; padding: 1px 8px; border-radius: 999px; }
 .diff-chip.easy { background: var(--green-soft); color: var(--green-ink); }
 .diff-chip.medium { background: var(--yellow-soft); color: #8A6200; }
 .diff-chip.hard { background: var(--red-soft); color: var(--red-d); }
+.custom-word-area { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; max-width: 440px; margin: 4px 0 2px; }
+.custom-word-divider { display: flex; align-items: center; gap: 10px; width: 100%; font-size: 11.5px; font-weight: 800; color: #B0C7F5; letter-spacing: .06em; }
+.custom-word-divider::before, .custom-word-divider::after { content: ''; flex: 1; height: 1px; background: rgba(255, 255, 255, .2); }
+.custom-word-form { display: flex; gap: 8px; width: 100%; }
+.custom-word-form input { flex: 1; padding: 8px 14px; font-size: 15px; font-weight: 800; border-radius: 12px; border: 2px solid rgba(255, 255, 255, .3); background: #fff; color: var(--text); box-shadow: 0 3px 0 rgba(0, 0, 0, .15); }
+.custom-word-form input:focus-visible { border-color: var(--yellow); box-shadow: 0 0 0 3px rgba(255, 201, 60, .35); }
 .chooser { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .chooser .av { width: 84px; height: 84px; }
 .deltas { list-style: none; margin: 0; padding: 6px 10px; width: 100%; max-width: 380px; background: #fff; color: var(--text); border-radius: 14px; }
