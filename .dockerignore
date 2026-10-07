@@ -1,0 +1,8 @@
+node_modules
+test
+e2e
+docs
+scripts
+*.md
+Chay-game.bat
+.git

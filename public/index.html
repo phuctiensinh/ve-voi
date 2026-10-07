@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2C62D3">
+  <title>Vẽ Vời: vẽ hình đoán chữ cùng hội bạn</title>
+  <meta name="description" content="Game vẽ hình đoán chữ nhiều người chơi, tối ưu cho tiếng Việt.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:ital,wght@0,500;0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- Bộ biểu tượng dùng chung -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20l1.2-4.6L15.6 5a2.1 2.1 0 0 1 3 0l.4.4a2.1 2.1 0 0 1 0 3L8.6 18.8z"/><path d="M13.8 6.8l3.4 3.4"/></symbol>
+      <symbol id="i-bucket" viewBox="0 0 24 24"><path d="M4.6 11.3L11 4.9l7 7-6.4 6.4a2 2 0 0 1-2.8 0l-4.2-4.2a2 2 0 0 1 0-2.8z"/><path d="M4.4 12h13.4"/><path d="M8.3 8.2L5.6 5.5"/><path d="M20.3 14.6s1.8 2.2 1.8 3.4a1.8 1.8 0 0 1-3.6 0c0-1.2 1.8-3.4 1.8-3.4z" fill="currentColor"/></symbol>
+      <symbol id="i-eraser" viewBox="0 0 24 24"><path d="M9 20h11"/><path d="M3.9 13.6l8.5-8.5a2 2 0 0 1 2.8 0l3.7 3.7a2 2 0 0 1 0 2.8L11.4 19.1a3 3 0 0 1-4.2 0l-3.3-3.3a1.6 1.6 0 0 1 0-2.2z"/><path d="M9 8.6l6.4 6.4"/></symbol>
+      <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+      <symbol id="i-redo" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3.5 6.5h17"/><path d="M8.5 6.5V4h7v2.5"/><path d="M5.8 6.5l1 13.5h10.4l1-13.5"/><path d="M10 10.5v6M14 10.5v6"/></symbol>
+      <symbol id="i-sound" viewBox="0 0 24 24"><path d="M3.5 9.5h3.8L12 5.5v13l-4.7-4H3.5z" fill="currentColor"/><path d="M15.5 9a4.5 4.5 0 0 1 0 6"/><path d="M18.5 6.3a8 8 0 0 1 0 11.4"/></symbol>
+      <symbol id="i-mute" viewBox="0 0 24 24"><path d="M3.5 9.5h3.8L12 5.5v13l-4.7-4H3.5z" fill="currentColor"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></symbol>
+      <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5.5l11-2.3v12.6"/><circle cx="6.5" cy="18" r="2.6" fill="currentColor"/><circle cx="17.5" cy="15.8" r="2.6" fill="currentColor"/></symbol>
+      <symbol id="i-stop" viewBox="0 0 24 24"><rect x="5.5" y="5.5" width="13" height="13" rx="3"/></symbol>
+      <symbol id="i-exit" viewBox="0 0 24 24"><path d="M14 4h4.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5H14"/><path d="M9.5 8L5.5 12l4 4"/><path d="M5.5 12H15"/></symbol>
+      <symbol id="i-send" viewBox="0 0 24 24"><path d="M3.5 11.4L20.5 4l-7.4 17-2.3-7.3z"/><path d="M10.8 13.7L20.5 4"/></symbol>
+      <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3.5-3.5a4 4 0 0 0-5.7-5.7L12 6.3"/><path d="M14 10a4 4 0 0 0-5.7 0l-3.5 3.5a4 4 0 0 0 5.7 5.7l1.5-1.5"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2"/><path d="M15.5 8.5V5.5A1.5 1.5 0 0 0 14 4H5.5A1.5 1.5 0 0 0 4 5.5V14a1.5 1.5 0 0 0 1.5 1.5h3"/></symbol>
+      <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3.5V8h4.5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 20.5V16h-4.5"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5L19.5 6.5"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></symbol>
+      <symbol id="i-crown" viewBox="0 0 24 24"><path d="M3.5 8.5l4.4 3.8L12 5.5l4.1 6.8 4.4-3.8L18.8 18H5.2z" fill="#FFC531" stroke="#B9830B" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.5 5h15a1.5 1.5 0 0 1 1.5 1.5v8.5a1.5 1.5 0 0 1-1.5 1.5H11l-5 4v-4H4.5A1.5 1.5 0 0 1 3 15V6.5A1.5 1.5 0 0 1 4.5 5z"/></symbol>
+      <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.5"/><path d="M2.5 19.5c.8-3.4 3.4-5.2 6.5-5.2s5.7 1.8 6.5 5.2"/><path d="M15.5 5.3a3.5 3.5 0 0 1 0 6.4M17.5 14.6c2 .7 3.4 2.4 4 4.9"/></symbol>
+      <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4"/><path d="M5 4.5h12l-2.5 4 2.5 4H5"/></symbol>
+      <symbol id="i-like" viewBox="0 0 24 24"><path d="M7 10.5V20H4.6A1.6 1.6 0 0 1 3 18.4v-6.3a1.6 1.6 0 0 1 1.6-1.6z"/><path d="M7 10.5l3.8-7a2 2 0 0 1 3.7 1.4L13.7 9h5.4a2 2 0 0 1 2 2.4l-1.4 7a2 2 0 0 1-2 1.6H7"/></symbol>
+      <symbol id="i-dislike" viewBox="0 0 24 24"><path d="M17 13.5V4h2.4A1.6 1.6 0 0 1 21 5.6v6.3a1.6 1.6 0 0 1-1.6 1.6z"/><path d="M17 13.5l-3.8 7a2 2 0 0 1-3.7-1.4l.8-4.1H4.9a2 2 0 0 1-2-2.4l1.4-7a2 2 0 0 1 2-1.6H17"/></symbol>
+      <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="1.8" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none"/><circle cx="18.5" cy="12" r="1.8" fill="currentColor" stroke="none"/></symbol>
+      <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M3.5 12S7 5.8 12 5.8c1.6 0 3 .5 4.3 1.3M20.5 12S17 18.2 12 18.2c-1.6 0-3-.5-4.3-1.3"/><path d="M4 20L20 4"/></symbol>
+      <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+      <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M7.5 5v14l11-7z" fill="currentColor"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="conn-banner hidden" id="conn-banner" role="status" aria-live="polite">
+    <span class="spinner" aria-hidden="true"></span>
+    <span id="conn-text">Đang kết nối tới máy chủ…</span>
+    <button type="button" class="btn btn-small btn-white hidden" id="conn-retry">Thử lại ngay</button>
+  </div>
+
+  <!-- ═════════ TRANG CHỦ ═════════ -->
+  <main id="screen-home" class="screen home">
+    <header class="home-head">
+      <h1 class="logo" aria-label="Vẽ Vời">
+        <span class="l1">V</span><span class="l2">ẽ</span>&nbsp;<span class="l3">V</span><span class="l4">ờ</span><span class="l5">i</span>
+      </h1>
+      <p class="tagline">Vẽ hình, đoán chữ, cười xỉu cùng hội bạn</p>
+    </header>
+
+    <section class="home-grid">
+      <div class="panel play-card">
+        <div class="name-row">
+          <label class="field grow">
+            <span class="field-label">Biệt danh</span>
+            <input id="nick" maxlength="16" placeholder="Nhập biệt danh" autocomplete="nickname">
+          </label>
+          <div class="lang" title="Ngôn ngữ của từ khoá">
+            <span class="field-label">Ngôn ngữ</span>
+            <span class="lang-value">Tiếng Việt</span>
+          </div>
+        </div>
+
+        <div class="avatar-picker" aria-label="Chọn avatar">
+          <button type="button" class="arrow" id="av-prev" aria-label="Khuôn mặt trước"><svg class="ic"><use href="#i-left"/></svg></button>
+          <div class="av-big" id="av-preview"></div>
+          <button type="button" class="arrow" id="av-next" aria-label="Khuôn mặt sau"><svg class="ic"><use href="#i-right"/></svg></button>
+        </div>
+        <div class="swatches" id="av-colors" role="radiogroup" aria-label="Màu avatar"></div>
+
+        <button type="button" class="btn btn-green btn-big" id="btn-quick"><svg class="ic"><use href="#i-play"/></svg><span>Chơi ngay</span></button>
+        <button type="button" class="btn btn-blue btn-big" id="btn-create"><svg class="ic"><use href="#i-plus"/></svg><span>Tạo phòng riêng</span></button>
+        <div class="join-row">
+          <input id="join-code" maxlength="6" placeholder="Mã phòng" autocapitalize="characters" spellcheck="false" aria-label="Mã phòng 6 ký tự">
+          <button type="button" class="btn btn-white" id="btn-join"><span>Vào phòng</span></button>
+        </div>
+        <div class="home-sound">
+          <label class="switch"><input type="checkbox" id="home-sfx"><span>Âm thanh</span></label>
+          <label class="switch"><input type="checkbox" id="home-music"><span>Nhạc nền</span></label>
+        </div>
+      </div>
+
+      <div class="home-side">
+      <div class="panel rooms-card">
+        <div class="panel-head">
+          <h2>Phòng công khai</h2>
+          <button type="button" class="icon-btn" id="btn-refresh" aria-label="Làm mới danh sách phòng" title="Làm mới"><svg class="ic"><use href="#i-refresh"/></svg></button>
+        </div>
+        <ul class="room-list" id="room-list"><li class="empty">Đang tải danh sách phòng…</li></ul>
+      </div>
+
+    <section class="panel howto" aria-labelledby="howto-title">
+      <h2 id="howto-title">Cách chơi</h2>
+      <ol class="steps">
+        <li><span class="step-ic c-yellow"><svg class="ic"><use href="#i-pencil"/></svg></span><p><b>Đến lượt bạn</b> thì chọn 1 từ và vẽ cho cả phòng đoán.</p></li>
+        <li><span class="step-ic c-blue"><svg class="ic"><use href="#i-chat"/></svg></span><p><b>Người khác đoán</b> bằng cách gõ vào khung chat. Có dấu hay không dấu đều được.</p></li>
+        <li><span class="step-ic c-green"><svg class="ic"><use href="#i-clock"/></svg></span><p><b>Đoán càng nhanh</b> điểm càng cao. Người vẽ được điểm theo số người đoán ra.</p></li>
+        <li><span class="step-ic c-red"><svg class="ic"><use href="#i-flag"/></svg></span><p><b>Không viết chữ</b> lên bảng. Cả phòng có thể tố và người vẽ bị trừ điểm.</p></li>
+      </ol>
+    </section>
+      </div>
+    </section>
+    <footer class="foot">Vẽ Vời · trò chơi vẽ hình đoán chữ tiếng Việt</footer>
+  </main>
+
+  <!-- ═════════ PHÒNG CHƠI ═════════ -->
+  <main id="screen-room" class="screen room hidden">
+    <header class="topbar panel">
+      <div class="brand" aria-hidden="true"><span class="l1">V</span><span class="l2">ẽ</span> <span class="l3">V</span><span class="l4">ờ</span><span class="l5">i</span></div>
+      <div class="timer" id="timer" role="timer" aria-label="Thời gian còn lại">
+        <svg viewBox="0 0 44 44" aria-hidden="true"><circle class="t-bg" cx="22" cy="22" r="19"/><circle class="t-fg" id="timer-ring" cx="22" cy="22" r="19"/></svg>
+        <span id="timer-num">–</span>
+      </div>
+      <div class="round" id="round-chip">Phòng chờ</div>
+      <div class="word-area" id="word-area" aria-live="polite"></div>
+      <div class="top-actions">
+        <button type="button" class="icon-btn stop hidden" id="btn-stop" title="Dừng trận (chủ phòng)" aria-label="Dừng trận"><svg class="ic"><use href="#i-stop"/></svg></button>
+        <button type="button" class="icon-btn" id="btn-sfx" title="Bật/tắt âm thanh" aria-label="Bật/tắt âm thanh"><svg class="ic"><use href="#i-sound"/></svg></button>
+        <button type="button" class="icon-btn" id="btn-music" title="Bật/tắt nhạc nền" aria-label="Bật/tắt nhạc nền"><svg class="ic"><use href="#i-music"/></svg></button>
+        <button type="button" class="icon-btn" id="btn-leave" title="Rời phòng" aria-label="Rời phòng"><svg class="ic"><use href="#i-exit"/></svg></button>
+      </div>
+    </header>
+
+    <section class="room-grid">
+      <aside class="panel players-card" id="panel-players" aria-label="Người chơi">
+        <div class="panel-head small"><h2>Người chơi</h2><span class="count" id="player-count"></span></div>
+        <ul class="players" id="players"></ul>
+      </aside>
+
+      <section class="center">
+        <!-- Phòng chờ -->
+        <div class="panel lobby" id="lobby-panel">
+          <div class="invite">
+            <div>
+              <span class="field-label">Mã phòng</span>
+              <div class="room-code" id="room-code">——————</div>
+            </div>
+            <div class="invite-actions">
+              <button type="button" class="btn btn-white" id="btn-copy-code"><svg class="ic"><use href="#i-copy"/></svg><span>Sao chép mã</span></button>
+              <button type="button" class="btn btn-blue" id="btn-copy-link"><svg class="ic"><use href="#i-link"/></svg><span>Sao chép link mời</span></button>
+            </div>
+          </div>
+          <p class="settings-note hidden" id="settings-note">Chỉ chủ phòng chỉnh được cài đặt. Bạn đang xem cài đặt hiện tại.</p>
+          <form class="settings" id="settings" autocomplete="off">
+            <label class="field span2"><span class="field-label">Tên phòng</span><input name="name" maxlength="30"></label>
+            <label class="field"><span class="field-label">Số người tối đa</span><select name="maxPlayers"></select></label>
+            <label class="field"><span class="field-label">Số hiệp</span><select name="rounds"></select></label>
+            <label class="field"><span class="field-label">Thời gian vẽ</span><select name="drawTime"></select></label>
+            <label class="field"><span class="field-label">Số từ để chọn</span><select name="wordCount"></select></label>
+            <label class="field"><span class="field-label">Số gợi ý chữ cái</span><select name="hints"></select></label>
+            <label class="field"><span class="field-label">Chế độ từ</span>
+              <select name="wordMode"><option value="normal">Bình thường (hiện số chữ)</option><option value="hidden">Ẩn độ dài, không gợi ý</option></select></label>
+            <label class="field"><span class="field-label">Chấm dấu tiếng Việt</span>
+              <select name="accentMode"><option value="loose">Không dấu cũng được</option><option value="strict">Phải gõ đúng dấu</option></select></label>
+            <label class="field"><span class="field-label">Ai được vào</span>
+              <select name="privacy"><option value="public">Công khai (hiện trong danh sách)</option><option value="private">Riêng tư (chỉ người có mã)</option></select></label>
+            <label class="field span2 hidden" id="pw-field"><span class="field-label">Mật khẩu phòng (tuỳ chọn)</span><input name="password" maxlength="20" placeholder="Bỏ trống nếu chỉ muốn ẩn phòng khỏi danh sách"></label>
+            <div class="field span2">
+              <span class="field-label">Chủ đề từ khoá</span>
+              <div class="chips" id="topic-chips"></div>
+            </div>
+            <label class="field span2"><span class="field-label">Từ tự thêm <small id="custom-count"></small></span>
+              <textarea name="customWords" rows="2" maxlength="6000" placeholder="Cách nhau bằng dấu phẩy. VD: sếp Tùng, deadline, trà chanh giã tay"></textarea></label>
+            <label class="check span2"><input type="checkbox" name="customOnly"><span>Chỉ dùng từ tự thêm (cần ít nhất 3 từ)</span></label>
+          </form>
+          <div class="lobby-foot">
+            <p id="lobby-hint"></p>
+            <button type="button" class="btn btn-green btn-big" id="btn-start"><svg class="ic"><use href="#i-play"/></svg><span>Bắt đầu</span></button>
+          </div>
+        </div>
+
+        <!-- Bảng vẽ -->
+        <div class="board hidden" id="board">
+          <div class="canvas-wrap" id="canvas-wrap">
+            <div class="canvas-box" id="canvas-box">
+              <canvas id="canvas" width="1600" height="1200" aria-label="Bảng vẽ"></canvas>
+              <div class="flash hidden" id="flash" aria-live="polite"></div>
+              <div class="overlay hidden" id="overlay"></div>
+            </div>
+          </div>
+          <div class="panel toolbar hidden" id="toolbar">
+            <div class="palette" id="palette" role="radiogroup" aria-label="Màu vẽ"></div>
+            <div class="sizes" id="sizes" role="radiogroup" aria-label="Cỡ nét"></div>
+            <div class="tools" role="toolbar" aria-label="Công cụ vẽ">
+              <button type="button" class="tool active" data-tool="brush" title="Bút vẽ (B)" aria-label="Bút vẽ"><svg class="ic"><use href="#i-pencil"/></svg></button>
+              <button type="button" class="tool" data-tool="fill" title="Đổ màu (F)" aria-label="Đổ màu"><svg class="ic"><use href="#i-bucket"/></svg></button>
+              <button type="button" class="tool" data-tool="eraser" title="Tẩy (E)" aria-label="Tẩy"><svg class="ic"><use href="#i-eraser"/></svg></button>
+              <span class="sep" aria-hidden="true"></span>
+              <button type="button" class="tool" id="btn-undo" title="Hoàn tác (Ctrl+Z)" aria-label="Hoàn tác"><svg class="ic"><use href="#i-undo"/></svg></button>
+              <button type="button" class="tool" id="btn-redo" title="Làm lại (Ctrl+Y)" aria-label="Làm lại"><svg class="ic"><use href="#i-redo"/></svg></button>
+              <button type="button" class="tool danger" id="btn-clear" title="Xoá hết" aria-label="Xoá hết"><svg class="ic"><use href="#i-trash"/></svg></button>
+            </div>
+          </div>
+          <div class="guess-bar hidden" id="guess-bar">
+            <span id="guess-hint">Gõ đáp án vào khung chat</span>
+            <div class="guess-actions">
+              <button type="button" class="btn btn-small btn-white rate" id="btn-like" data-like="1" title="Thích bức vẽ này" aria-label="Thích bức vẽ này"><svg class="ic"><use href="#i-like"/></svg></button>
+              <button type="button" class="btn btn-small btn-white rate" id="btn-dislike" data-like="0" title="Chưa thích bức vẽ này" aria-label="Chưa thích bức vẽ này"><svg class="ic"><use href="#i-dislike"/></svg></button>
+              <button type="button" class="btn btn-small btn-white" id="btn-report"><svg class="ic"><use href="#i-flag"/></svg><span>Tố viết chữ</span></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel chat-card" id="panel-chat" aria-label="Trò chuyện">
+        <ul class="chat" id="chat" aria-live="polite"></ul>
+        <form class="chat-form" id="chat-form" autocomplete="off">
+          <input id="chat-input" maxlength="100" placeholder="Gõ đáp án vào đây…" enterkeyhint="send" autocomplete="off" spellcheck="false" aria-label="Tin nhắn hoặc đáp án">
+          <button class="btn btn-blue send" aria-label="Gửi"><svg class="ic"><use href="#i-send"/></svg></button>
+        </form>
+      </aside>
+    </section>
+
+    <nav class="mobile-tabs" id="mobile-tabs" aria-label="Chuyển khung">
+      <button type="button" data-tab="chat" class="active"><svg class="ic"><use href="#i-chat"/></svg><span>Trò chuyện</span></button>
+      <button type="button" data-tab="players"><svg class="ic"><use href="#i-users"/></svg><span>Người chơi</span></button>
+    </nav>
+  </main>
+
+  <div class="menu hidden" id="player-menu" role="menu"></div>
+  <dialog id="modal" class="modal"></dialog>
+  <div class="toasts" id="toasts" aria-live="assertive"></div>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "ve-voi",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Vẽ Vời — game vẽ hình đoán chữ nhiều người chơi, tối ưu cho tiếng Việt (không cần cài thư viện)",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "build": "node scripts/check.js",
+    "test": "node scripts/run-tests.js",
+    "test:unit": "node scripts/run-tests.js vietnamese rules engine",
+    "test:integration": "node scripts/run-tests.js multiplayer canvas resilience moderation security scenario",
+    "check": "node scripts/check.js && node scripts/run-tests.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

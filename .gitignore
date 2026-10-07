@@ -1,0 +1,8 @@
+node_modules/
+npm-debug.log*
+*.log
+e2e/screenshots/
+__pycache__/
+.DS_Store
+
+.vercel
