@@ -128,7 +128,7 @@ textarea { resize: vertical; min-height: 54px; }
 .home-head { text-align: center; margin-bottom: 24px; color: #fff; }
 .logo {
   position: relative; display: inline-block; margin: 0;
-  font: 800 clamp(58px, 11vw, 96px)/1 var(--display); letter-spacing: 1px;
+  font: 800 clamp(34px, 9vw, 96px)/1 var(--display); letter-spacing: 1px;
 }
 .logo span { -webkit-text-stroke: 7px #15367F; paint-order: stroke fill; text-shadow: 0 6px 0 #15367F; }
 .logo .l1 { color: #FF5C61; }
