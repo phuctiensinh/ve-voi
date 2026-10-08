@@ -27,6 +27,8 @@
       <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5.5l11-2.3v12.6"/><circle cx="6.5" cy="18" r="2.6" fill="currentColor"/><circle cx="17.5" cy="15.8" r="2.6" fill="currentColor"/></symbol>
       <symbol id="i-stop" viewBox="0 0 24 24"><rect x="5.5" y="5.5" width="13" height="13" rx="3"/></symbol>
       <symbol id="i-exit" viewBox="0 0 24 24"><path d="M14 4h4.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5H14"/><path d="M9.5 8L5.5 12l4 4"/><path d="M5.5 12H15"/></symbol>
+      <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0"/><path d="M12 17.5V21"/></symbol>
+      <symbol id="i-mic-off" viewBox="0 0 24 24"><path d="M15 9.5V6a3 3 0 0 0-5.8-1.1"/><path d="M9 9v2a3 3 0 0 0 4.6 2.5"/><path d="M5.5 11a6.5 6.5 0 0 0 10.4 5.2"/><path d="M18.5 11a6.4 6.4 0 0 1-.5 2.4"/><path d="M12 17.5V21"/><path d="M4 4l16 16"/></symbol>
       <symbol id="i-send" viewBox="0 0 24 24"><path d="M3.5 11.4L20.5 4l-7.4 17-2.3-7.3z"/><path d="M10.8 13.7L20.5 4"/></symbol>
       <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3.5-3.5a4 4 0 0 0-5.7-5.7L12 6.3"/><path d="M14 10a4 4 0 0 0-5.7 0l-3.5 3.5a4 4 0 0 0 5.7 5.7l1.5-1.5"/></symbol>
       <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2"/><path d="M15.5 8.5V5.5A1.5 1.5 0 0 0 14 4H5.5A1.5 1.5 0 0 0 4 5.5V14a1.5 1.5 0 0 0 1.5 1.5h3"/></symbol>
@@ -221,6 +223,11 @@
 
       <aside class="panel chat-card" id="panel-chat" aria-label="Trò chuyện">
         <ul class="chat" id="chat" aria-live="polite"></ul>
+        <div class="voice-bar">
+          <button type="button" class="btn btn-white btn-small" id="btn-voice" aria-pressed="false"><svg class="ic"><use href="#i-mic"/></svg><span>Vào voice</span></button>
+          <button type="button" class="btn btn-white btn-small mic hidden" id="btn-mic" aria-label="Tắt mic"><svg class="ic"><use href="#i-mic"/></svg></button>
+          <span class="voice-count" id="voice-count"></span>
+        </div>
         <form class="chat-form" id="chat-form" autocomplete="off">
           <input id="chat-input" maxlength="100" placeholder="Gõ đáp án vào đây…" enterkeyhint="send" autocomplete="off" spellcheck="false" aria-label="Tin nhắn hoặc đáp án">
           <button class="btn btn-blue send" aria-label="Gửi"><svg class="ic"><use href="#i-send"/></svg></button>

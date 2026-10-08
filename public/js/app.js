@@ -6,6 +6,7 @@ import { initLobby, renderLobby } from './lobby.js';
 import { initPlayers, renderPlayers, closeMenu } from './players.js';
 import { initChat, clearChat, renderChatInput } from './chat.js';
 import { initGame, renderGame, resetGameView } from './game.js';
+import { initVoice, syncVoice, stopVoice } from './voice.js';
 
 // Lỗi bất ngờ trong giao diện: báo nhẹ nhàng thay vì để trang "chết" im lặng
 let lastCrashToast = 0;
@@ -21,6 +22,7 @@ initLobby();
 initPlayers();
 initChat();
 initGame();
+initVoice();
 
 // ═════════ Chuyển màn hình ═════════
 function show(screen) {
@@ -32,6 +34,7 @@ function show(screen) {
 
 function goHome(message, err = false) {
   doneRequest();
+  stopVoice();
   S.you = null; S.code = null; S.state = null;
   resetGameView();
   closeMenu();
@@ -49,6 +52,7 @@ function render(st) {
   if (st.phase === 'lobby') renderLobby(st);
   renderGame(st);
   renderChatInput(st);
+  syncVoice(st);
 }
 
 // ═════════ Sự kiện phòng ═════════

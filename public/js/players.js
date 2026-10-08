@@ -19,7 +19,7 @@ export function renderPlayers(st) {
       <span class="rank">#${i + 1}</span>
       ${avatarSVG(p.avatar)}
       <span class="pl-info">
-        <span class="pl-name">${p.id === st.hostId ? `<svg class="ic" aria-label="Chủ phòng"><use href="#i-crown"/></svg>` : ''}<span>${esc(p.name)}</span>${me ? '<span class="you">(bạn)</span>' : ''}${p.muted ? icon('mute') : ''}</span>
+        <span class="pl-name">${p.id === st.hostId ? `<svg class="ic" aria-label="Chủ phòng"><use href="#i-crown"/></svg>` : ''}<span>${esc(p.name)}</span>${me ? '<span class="you">(bạn)</span>' : ''}${p.muted ? icon('mute') : ''}${p.voice ? `<span title="Đang trong voice">${icon('mic', 'vc')}</span>` : ''}</span>
         <span class="pl-score">${p.score} điểm</span>
       </span>
       <span class="pl-status">${p.votes ? `<span class="votes" title="Phiếu mời ra">${p.votes}/${p.votesNeeded ?? '–'}</span>` : ''}${status}</span>

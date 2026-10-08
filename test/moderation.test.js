@@ -162,3 +162,30 @@ test('phòng riêng có mật khẩu: thiếu / sai mật khẩu bị từ chố
     await srv.stop();
   }
 });
+
+test('voice chat: chỉ chuyển tín hiệu giữa người đang bật voice; bị tắt chat thì bị gỡ khỏi voice', async () => {
+  const srv = await startServer();
+  try {
+    const [H, B, C] = await makeRoom(srv, ['Chủ', 'B', 'C']);
+    const sdp = { type: 'offer', sdp: 'v=0' };
+    H.send('voice:join', {});
+    B.send('voice:join', {});
+    await C.waitFor('room:state', (s) => s.players.filter((p) => p.voice).length === 2);
+    H.send('voice:signal', { to: B.id, sdp });
+    const sig = await B.waitFor('voice:signal');
+    assert.equal(sig.from, H.id);
+    assert.deepEqual(sig.sdp, sdp);
+    // C chưa vào voice: không gửi được, cũng không nhận được
+    const since = C.mark();
+    C.send('voice:signal', { to: B.id, sdp });
+    H.send('voice:signal', { to: C.id, sdp });
+    await sleep(150);
+    assert.equal(C.all('voice:signal', () => true, since).length, 0);
+    H.send('host:mute', { playerId: B.id, muted: true });
+    const st = await H.waitFor('room:state', (s) => s.players.find((p) => p.id === B.id).muted);
+    assert.equal(st.players.find((p) => p.id === B.id).voice, false);
+    assert.equal((await errorOf(B, () => B.send('voice:join', {}))).code, 'VOICE_MUTED');
+  } finally {
+    await srv.stop();
+  }
+});

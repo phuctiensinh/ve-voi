@@ -21,7 +21,7 @@ function makeLogger(level = 'info') {
 }
 
 // Sự kiện vẽ: không trả lỗi về (có thể là gói tin còn trên đường khi lượt vừa kết thúc), chỉ bỏ qua.
-const SILENT = new Set(['draw:start', 'draw:pts', 'draw:end', 'draw:fill', 'draw:clear', 'draw:undo', 'draw:redo', 'canvas:resync']);
+const SILENT = new Set(['draw:start', 'draw:pts', 'draw:end', 'draw:fill', 'draw:clear', 'draw:undo', 'draw:redo', 'canvas:resync', 'voice:signal']);
 
 /**
  * Tạo máy chủ game (chưa listen).
@@ -127,6 +127,9 @@ function createServer(options = {}) {
     'draw:undo': (r, p) => r.drawUndo(p),
     'draw:redo': (r, p) => r.drawRedo(p),
     'canvas:resync': (r, p) => r.resync(p),
+    'voice:join': (r, p) => r.voiceJoin(p),
+    'voice:leave': (r, p) => r.voiceLeave(p),
+    'voice:signal': (r, p, d) => r.voiceSignal(p, d),
   };
 
   io.on('handlerError', (err) => log('error', `Lỗi không mong đợi khi xử lý tin nhắn: ${(err && err.stack) || err}`));

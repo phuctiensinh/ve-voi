@@ -410,6 +410,12 @@ textarea { resize: vertical; min-height: 54px; }
 .chat .echo .tag { background: var(--line); color: var(--muted); }
 .chat .me .who { color: var(--blue-d); }
 .chat-form { display: flex; gap: 8px; }
+.voice-bar { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; }
+.voice-bar .mic { padding: 7px 9px; }
+.voice-bar .mic.off { color: var(--red); }
+.voice-count { min-width: 0; font-size: 12.5px; font-weight: 800; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pl-name .ic.vc { color: var(--green); }
+.pl.speaking .av { border-radius: 50%; box-shadow: 0 0 0 3px var(--green); }
 .chat-form .send { padding: 10px 13px; }
 
 .mobile-tabs { display: none; }

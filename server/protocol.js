@@ -23,6 +23,7 @@ const ERR = {
   SELF_ACTION: 'Không thể làm việc này với chính mình.',
   SERVER_BUSY: 'Máy chủ đang quá tải, thử lại sau nhé.',
   TOO_MANY_ROOMS: 'Bạn tạo phòng nhiều quá, đợi một lát nhé.',
+  VOICE_MUTED: 'Chủ phòng đã tắt chat của bạn nên không bật mic được.',
 };
 
 // ───────── Bộ dựng schema tối giản ─────────
@@ -85,6 +86,15 @@ const C2S = {
   'draw:clear': S.any(),
   'canvas:resync': S.any(),
   'ping:time': S.obj({ t: S.num(0, 1e15) }),
+  'voice:join': S.any(),
+  'voice:leave': S.any(),
+  'voice:signal': S.obj({
+    to: S.str(32, 1),
+    sdp: S.opt(S.obj({ type: (v) => v === 'offer' || v === 'answer', sdp: S.str(20000, 1) })),
+    candidate: S.opt(S.obj({
+      candidate: S.str(1000), sdpMid: S.opt(S.str(64)), sdpMLineIndex: S.opt(S.int(0, 64)), usernameFragment: S.opt(S.str(256)),
+    })),
+  }),
 };
 
 /** Sự kiện server → client (để tra cứu; payload mô tả trong README). */
@@ -93,7 +103,7 @@ Object.freeze(C2S);
 const S2C = [
   'room:joined', 'room:state', 'room:error', 'room:left', 'room:closed', 'rooms:list', 'kicked', 'error:action',
   'chat:msg', 'turn:options', 'turn:end', 'game:end', 'sfx',
-  'canvas:sync', 'draw:start', 'draw:pts', 'draw:end', 'draw:action', 'pong:time', 'toast',
+  'canvas:sync', 'draw:start', 'draw:pts', 'draw:end', 'draw:action', 'pong:time', 'toast', 'voice:signal',
 ];
 
 /** Giới hạn tần suất mỗi kết nối: [số sự kiện mỗi giây, sức chứa tối đa]. */
@@ -102,6 +112,7 @@ const RATE = {
   'draw:undo': [10, 20], 'draw:redo': [10, 20], 'draw:clear': [3, 6], 'canvas:resync': [1, 3],
   chat: [3, 8], 'room:create': [0.2, 3], 'room:join': [1, 6], 'room:quick': [0.5, 4], 'rooms:list': [2, 6],
   'room:leave': [2, 5], 'host:settings': [10, 30], 'ping:time': [2, 6], 'word:choose': [2, 5],
+  'voice:join': [1, 4], 'voice:leave': [1, 4], 'voice:signal': [40, 120],
   default: [5, 15],
 };
 

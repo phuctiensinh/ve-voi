@@ -220,6 +220,7 @@ class Room {
       guessed: false,
       lastDelta: 0,
       muted: false,
+      voice: false,
       stats: { correct: 0, fastestMs: Infinity, drawPts: 0, reportsAgainst: 0 },
       chat: { times: [], recent: [], mutedNoticeAt: 0 },
       removeTimer: null,
@@ -290,6 +291,7 @@ class Room {
     if (!player || !player.connected) return;
     player.connected = false;
     player.socket = null;
+    player.voice = false;
     this.system(`${player.name} mất kết nối…`, 'leave');
     player.removeTimer = this.later(() => this.removePlayer(player.id, 'timeout'), this.ms('reconnectGrace'));
     if (this.hostId === player.id && !this.timers.hostGrace) {
@@ -400,6 +402,7 @@ class Room {
     if (err) return err;
     if (t.muted === !!muted) return null;
     t.muted = !!muted;
+    if (t.muted) t.voice = false;
     this.system(t.muted ? `Chủ phòng đã tắt chat của ${t.name}` : `Chủ phòng đã bật lại chat cho ${t.name}`, 'info');
     this.broadcastState();
     return null;
@@ -911,6 +914,30 @@ class Room {
     }
   }
 
+  // ════════════════ Voice chat (WebRTC: server chỉ chuyển tín hiệu, âm thanh đi thẳng giữa các máy) ════════════════
+  voiceJoin(player) {
+    if (player.muted) return 'VOICE_MUTED';
+    if (player.voice) return null;
+    player.voice = true;
+    this.broadcastState();
+    return null;
+  }
+
+  voiceLeave(player) {
+    if (!player.voice) return null;
+    player.voice = false;
+    this.broadcastState();
+    return null;
+  }
+
+  /** Chuyển offer/answer/ICE giữa hai người cùng đang bật voice trong phòng. */
+  voiceSignal(player, d) {
+    const t = this.players.get(d.to);
+    if (!player.voice || !t || t === player || !t.voice || !t.socket) return null;
+    t.socket.emit('voice:signal', { from: player.id, sdp: d.sdp || null, candidate: d.candidate || null });
+    return null;
+  }
+
   // ════════════════ Trạng thái gửi cho từng người ════════════════
   playerStatus(p) {
     if (!this.turn || !(this.phase === 'choosing' || this.phase === 'drawing' || this.phase === 'turnEnd')) return 'idle';
@@ -946,7 +973,7 @@ class Room {
       topics: TOPICS,
       players: [...this.players.values()].map((p) => ({
         id: p.id, name: p.name, avatar: p.avatar, score: p.score, connected: p.connected,
-        status: this.playerStatus(p), delta: p.lastDelta, muted: p.muted,
+        status: this.playerStatus(p), delta: p.lastDelta, muted: p.muted, voice: p.voice,
         votes: this.votes.get(p.id)?.size || 0,
         votedByYou: !!viewer && !!this.votes.get(p.id)?.has(viewer.id),
         votesNeeded: this.votesNeeded(p.id),
